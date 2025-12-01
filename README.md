@@ -1,6 +1,6 @@
-# TypeScript Interview Questions (Bangla)
+# TypeScript Interview Questions Explained In (Bangla)
 
-নীচে দেওয়া সবগুলো প্রশ্নের উত্তর বাংলায় ব্যাখ্যা করা হলো।
+সবগুলো প্রশ্নের উত্তর বাংলায় ব্যাখ্যা করা হলো।
 
 ---
 
