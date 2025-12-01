@@ -45,7 +45,6 @@ const filterByRating = (items: Item[]): Item[] => {
     return items.filter((item) => item.rating >= 4);
 };
 
-
 type User = {
     id: number;
     name: string;
@@ -64,11 +63,9 @@ interface Book {
     isAvailable: boolean;
 }
 
-const printBookDetails = (book: Book): void => {
+const printBookDetails = (book: Book): string => {
     const availability = book.isAvailable ? "Yes" : "No";
-    console.log(
-        `Title: ${book.title}, Author: ${book.author}, Published: ${book.publishedYear}, Available: ${availability}`
-    );
+    return `Title: ${book.title}, Author: ${book.author}, Published: ${book.publishedYear}, Available: ${availability}`;
 };
 
 function getUniqueValues<T extends number | string>(
