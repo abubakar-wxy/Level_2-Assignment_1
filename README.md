@@ -1,122 +1,153 @@
-Interview Questions – TypeScript Explained (Bangla)
-1. Interface এবং Type এর মধ্যে পার্থক্য কী?
+# TypeScript Interview Questions (Bangla)
 
-TypeScript-এ interface এবং type alias–দুটোই object-এর structure define করতে ব্যবহৃত হয়, কিন্তু এদের মাঝে কিছু গুরুত্বপূর্ণ পার্থক্য আছে।
+নীচে দেওয়া সবগুলো প্রশ্নের উত্তর বাংলায় ব্যাখ্যা করা হলো।
 
-✔ Interface
+---
 
-Object structure define করতে সবচেয়ে বেশি ব্যবহার হয়
+## **1. Interfaces এবং Types এর মধ্যে পার্থক্য**
 
-Extend করা যায় (inheritance)
+TypeScript-এ Interface এবং Type Alias দুটিই অবজেক্টের শেপ বা স্ট্রাকচার ডিফাইন করতে ব্যবহৃত হয়, কিন্তু তাদের মধ্যে কিছু মৌলিক পার্থক্য আছে:
 
-একই নামে একাধিক interface ডিক্লেয়ার করলে তারা merge হয়ে যায় (Declaration Merging)
+### **Interfaces**
 
-✔ Type
+* বিশেষভাবে অবজেক্টের স্ট্রাকচার ডিফাইন করার জন্য তৈরি।
+* একাধিকবার ডিক্লেয়ার করলে অটোমেটিকভাবে merge হয়ে যায়।
+* `extends` ব্যবহার করে অন্য interface কে extend করা যায়।
 
-Primitive, Union, Tuple, Function—সব কিছু define করতে পারে
+### **Types**
 
-Extend করা যায় (& ব্যবহার করে)
+* Primitive, Union, Intersection, Function, Tuple—প্রায় সবকিছুতেই ব্যবহার করা যায়।
+* পুনরায় declare করলে error দেয়—merge হয় না।
+* `&` দিয়ে multiple type combine করা যায়।
 
-Declaration merging হয় না
+### **সংক্ষিপ্ত পার্থক্য:**
 
-More flexible
+| Interface                                   | Type                                     |
+| ------------------------------------------- | ---------------------------------------- |
+| Merge হয়                                   | Merge হয় না                             |
+| শুধুমাত্র object, class, function structure | Union, intersection, primitives সব সম্ভব |
+| `extends` keyword                           | `&` operator                             |
 
-সংক্ষেপে পার্থক্য
-Feature	Interface	Type
-Declaration Merging	✔ Yes	❌ No
-Supports primitives	❌ No	✔ Yes
-Extend করা যায়	✔ Yes (extends)	✔ Yes (& দিয়ে)
-Flexibility	Medium	High
-2. keyof কীওয়ার্ডের ব্যবহার কী? একটি উদাহরণ দিন।
+---
 
-keyof এমন একটি keyword যেটি কোনো object type-এর সব property name কে union হিসেবে রিটার্ন করে।
+## **2. keyof এর ব্যবহার উদাহরণসহ**
 
-উদাহরণ
+`keyof` কোনো object-type এর সমস্ত key কে একটি union type হিসেবে বের করে আনে।
+
+### **উদাহরণ:**
+
+```ts
 interface User {
   name: string;
   age: number;
+  email: string;
 }
 
-type UserKeys = keyof User;
-// UserKeys = "name" | "age"
+type UserKeys = keyof User; // "name" | "age" | "email"
+```
 
+### **ব্যবহার:**
 
-এটি মূলত type-safe property access নিশ্চিত করতে ব্যবহৃত হয়।
+```ts
+function getProperty<T>(obj: T, key: keyof T) {
+  return obj[key];
+}
 
-3. any, unknown এবং never এর মধ্যে পার্থক্য কী?
-✔ any
+const user = { name: "Abu Bakar", age: 20 };
+console.log(getProperty(user, "name"));
+```
 
-যেকোনো টাইপ করা যায়
+এভাবে আপনি নিশ্চিত হচ্ছেন যে শুধুমাত্র valid key-ই পাস হবে।
 
-Type safety নেই
+---
 
-ভুল হলেও TypeScript error দেখায় না
+## **3. any, unknown, never এর পার্থক্য**
 
-সবচেয়ে কম নিরাপদ টাইপ
+TypeScript-এ এগুলো special types এবং আলাদা উদ্দেশ্যে ব্যবহার হয়।
 
-✔ unknown
+### **any**
 
-any এর মতো সব ধরনের মান রাখা যায়
+* Type checking বন্ধ করে দেয়।
+* যেকোনো কিছু assign করা যায়।
+* ভুল ধরতে পারে না → dangerous।
 
-কিন্তু কোনো operation করতে গেলে type checking করতে হয়
+### **unknown**
 
-any এর চেয়ে অনেক নিরাপদ
+* নিরাপদ any।
+* যেকোনো কিছু রাখা যায় কিন্তু ব্যবহার করতে চাইলে type-check লাগবে।
 
-✔ never
+### **never**
 
-এমন কিছু represent করে যা কখনো ঘটে না
+* কখনো কোনো value থাকে না।
+* এমন function যেটা কখনো return করে না (error throw / infinite loop)।
 
-যেমন: function যা কখনো return করে না (infinite loop বা error throw করে)
+### **সংক্ষিপ্ত পার্থক্য:**
 
-সংক্ষেপে পার্থক্য
-Type	Description
-any	সব কিছু allowed, কোনো type-check নেই
-unknown	সব কিছু রাখা যায়, কিন্তু ব্যবহারের আগে type-check লাগে
-never	কখনো return হয় না এমন পরিস্থিতি
-4. Enum কী? একটি numeric এবং string enum এর উদাহরণ দিন।
+| any                  | unknown                      | never          |
+| -------------------- | ---------------------------- | -------------- |
+| কিছুই checked হয় না | ব্যবহার করতে type-check লাগে | কোনো value নেই |
+| Unsafe               | Safe                         | Impossible     |
 
-Enum হলো TypeScript-এর একটি feature, যা fixed set of values নিয়ে কাজ করতে সাহায্য করে।
+---
 
-✔ Numeric Enum Example
+## **4. Enums এর ব্যবহার (Numeric & String Enum)**
+
+Enum হলো TypeScript-এর একটি feature যেটা constant value set তৈরি করতে ব্যবহৃত হয়।
+
+### **Numeric Enum:**
+
+```ts
 enum Status {
-  Active = 1,
-  Inactive = 2,
-  Pending = 3,
+  Success = 1,
+  Failed = 0,
 }
+```
 
-✔ String Enum Example
-enum Role {
+### **String Enum:**
+
+```ts
+enum Roles {
   Admin = "ADMIN",
   User = "USER",
-  Guest = "GUEST"
 }
+```
 
+### **ব্যবহার:**
 
-Enum ব্যবহারে fixed values নিয়ে কাজ করা সহজ ও type-safe হয়।
+```ts
+function checkStatus(status: Status) {
+  if (status === Status.Success) console.log("Success");
+}
+```
 
-5. Union এবং Intersection Types এর উদাহরণ দিন।
-✔ Union Type
+---
 
-একটি ভ্যারিয়েবল একাধিক টাইপ গ্রহণ করতে পারে।
+## **5. Union এবং Intersection Type এর উদাহরণ**
 
-let id: string | number;
-id = 101;
-id = "AB101";
+### **Union Type (A বা B)**
 
-✔ Intersection Type
+```ts
+type ID = number | string;
+let userId: ID = 10;
+userId = "AB-01";
+```
 
-একাধিক টাইপকে merge (combine) করে।
+### **Intersection Type (A + B একসাথে)**
 
+```ts
 type Person = { name: string };
 type Employee = { employeeId: number };
 
 type Staff = Person & Employee;
 
 const staff: Staff = {
-  name: "John",
-  employeeId: 202
+  name: "Abu Bakar",
+  employeeId: 101,
 };
+```
 
+---
 
-Union → OR
-Intersection → AND
+## **সমাপ্তি**
+
+এই প্রশ্নগুলো TypeScript interview-এ খুবই common এবং foundational concepts বোঝার জন্য অত্যন্ত গুরুত্বপূর্ণ।
