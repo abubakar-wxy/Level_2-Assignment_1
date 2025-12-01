@@ -145,9 +145,3 @@ const staff: Staff = {
   employeeId: 101,
 };
 ```
-
----
-
-## **সমাপ্তি**
-
-এই প্রশ্নগুলো TypeScript interview-এ খুবই common এবং foundational concepts বোঝার জন্য অত্যন্ত গুরুত্বপূর্ণ।
